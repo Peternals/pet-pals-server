@@ -2,6 +2,7 @@ const express = require("express");
 const Socket = require("socket.io");
 const cors = require("cors");
 const db = require("./db");
+const userRoute = require("./routes/user");
 
 const app = express();
 
@@ -11,6 +12,10 @@ app.use(cors());
 app.get("/test", (req, res) => {
 	res.send("hello");
 });
+
+app.use("/user", userRoute);
+
+
 const server = app.listen(port, () => {
 	console.log(`listening to port ${port}`);
 });
