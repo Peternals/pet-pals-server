@@ -15,5 +15,5 @@ const io = Socket(server, {
 });
 
 io.on("connection", (socket) => {
-	console.log(socket.id);
+	require("./socket")(socket);
 });
