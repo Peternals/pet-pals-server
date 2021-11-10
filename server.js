@@ -8,8 +8,12 @@ const server = app.listen(port, () => {
 	console.log(`listening to port ${port}`);
 });
 
-const io = Socket(server);
+const io = Socket(server, {
+	cors: {
+		origin: "http://localhost:3000",
+	},
+});
 
-io.socket.on("connection", (socket) => {
-	console.log(socket.io);
+io.on("connection", (socket) => {
+	console.log(socket.id);
 });
