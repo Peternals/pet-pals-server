@@ -1,0 +1,19 @@
+{
+  "name": "pet-server",
+  "version": "1.0.0",
+  "description": "Server for the pet rental",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Team-Freshly-Washed-Turtles/pet-server.git"
+  },
+  "author": "team peternals",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Team-Freshly-Washed-Turtles/pet-server/issues"
+  },
+  "homepage": "https://github.com/Team-Freshly-Washed-Turtles/pet-server#readme"
+}
