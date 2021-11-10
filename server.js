@@ -1,6 +1,7 @@
 const express = require("express");
 const Socket = require("socket.io");
 const cors = require("cors");
+const db = require("./db");
 
 const app = express();
 
