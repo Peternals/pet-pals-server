@@ -2,22 +2,26 @@ require('dotenv').config();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const db = require('../db');
+const User = require('../models/User')
 
 const signUp = async (req, res) => {
 
    try {
     // Get user input
-    const { email, password } = req.body;
+    // const { email, password } = req.body;
+    const { email } = req.body;
+    console.log(req.body);
 
     // Validate user input
-    if (!(email && password )) {
-      res.status(400).send("All input is required");
+    // if (!( email && password )) {
+    if (!( email )) {
+    res.status(400).send("All input is required");
     }
 
     // check if user already exist
     // Validate if user exist in our database
-    const oldUser = await db.User.findOne({ "email": email });
-
+    const oldUser = await User.find({ "email": email });
+    console.log(oldUser);
     if (oldUser) {
       return res.status(409).send("User Already Exist. Please Login");
     }
@@ -26,7 +30,7 @@ const signUp = async (req, res) => {
     encryptedPassword = await bcrypt.hash(password, 10);
 
     // Create user in our database
-    const user = await db.User.create({
+    const user = await User.create({
       email: email.toLowerCase(), // sanitize: convert email to lowercase
       password: encryptedPassword,
     });
