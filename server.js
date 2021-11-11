@@ -2,7 +2,6 @@ const express = require("express");
 const Socket = require("socket.io");
 const cors = require("cors");
 const db = require("./db");
-const userRoute = require("./routes/user");
 
 const app = express();
 app.use(express.json());
@@ -11,6 +10,8 @@ app.use(express.urlencoded({
 }));
 
 app.use("/auth", require("./routes/auth"));
+app.use("/user", require("./routes/user"));
+app.use("/pet", require("./routes/pet"));
 
 const port = process.env.PORT || 4000;
 
@@ -19,7 +20,6 @@ app.get("/test", (req, res) => {
 	res.send("hello");
 });
 
-app.use("/user", userRoute);
 
 
 const server = app.listen(port, () => {
