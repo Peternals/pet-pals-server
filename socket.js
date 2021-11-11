@@ -17,6 +17,15 @@ module.exports = (socket, io) => {
 		addUser({ ...data, socket_id: socket.id });
 		console.log(users);
 	});
+	socket.on("senderTyping", (data) => {
+		console.log(data.receiver_id);
+		const user = getUser(data.receiver_id);
+		console.log(user);
+		if (user.length === 1) {
+			console.log(data);
+			io.to(user[0].socket_id).emit("senderTyping", data);
+		}
+	});
 
 	socket.on("sendMessage", (data) => {
 		console.log(data.receiver_id);
