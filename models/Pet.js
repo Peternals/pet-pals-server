@@ -10,8 +10,7 @@ const PetSchema = new mongoose.Schema({
         required: true
     },
     owner_id: {
-        type: ObjectId,
-        ref: 'User'
+        type: String
     },
     description: {
         type: String,
