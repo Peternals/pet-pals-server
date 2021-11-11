@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const user = require('../controllers/userContoroller');
+const user = require('../controllers/userController');
 
 // update user info
 router.patch('/:id', user.updateUser);
