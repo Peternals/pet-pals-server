@@ -4,7 +4,9 @@
 	"description": "Server for the pet rental",
 	"main": "index.js",
 	"scripts": {
-		"start": "nodemon server"
+		"start": "node server",
+		"dev": "nodemon server"
+
 	},
 	"repository": {
 		"type": "git",
