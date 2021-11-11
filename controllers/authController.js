@@ -8,20 +8,17 @@ const signUp = async (req, res) => {
 
    try {
     // Get user input
-    // const { email, password } = req.body;
-    const { email } = req.body;
+    const { email, password } = req.body;
     console.log(req.body);
 
     // Validate user input
-    // if (!( email && password )) {
-    if (!( email )) {
+    if (!( email && password )) {
     res.status(400).send("All input is required");
     }
 
     // check if user already exist
     // Validate if user exist in our database
     const oldUser = await User.find({ "email": email });
-    console.log(oldUser);
     if (oldUser) {
       return res.status(409).send("User Already Exist. Please Login");
     }
@@ -98,17 +95,3 @@ module.exports = {
   signUp,
   verify,
 };
-
-// const signIn = (req, res) => {
-
-//   // Authenticate User
-//   const userId = req.body.id;
-//   const payload = {
-//     userId: userId,
-//    };
-
-//   const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET);
-//   res.json({
-//     accessToken: accessToken
-//   });
-// }
