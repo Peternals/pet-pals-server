@@ -10,6 +10,7 @@ app.use(express.urlencoded({
 	extended: true,
 }));
 app.use(morgan("dev"));
+app.use(cors());
 
 app.use("/auth", require("./routes/auth"));
 app.use("/user", require("./routes/user"));
@@ -17,7 +18,6 @@ app.use("/pet", require("./routes/pet"));
 
 const port = process.env.PORT || 4000;
 
-app.use(cors());
 app.get("/test", (req, res) => {
 	res.send("hello");
 });
