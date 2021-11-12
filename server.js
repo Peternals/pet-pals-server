@@ -9,12 +9,12 @@ app.use(express.json());
 app.use(express.urlencoded({
 	extended: true,
 }));
+app.use(cors());
 
 app.use("/auth", require("./routes/auth"));
 
 const port = process.env.PORT || 4000;
 
-app.use(cors());
 app.get("/test", (req, res) => {
 	res.send("hello");
 });
