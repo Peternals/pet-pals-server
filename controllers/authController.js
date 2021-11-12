@@ -23,7 +23,7 @@ const validation = async (req, res) => {
       return res.status(409).send("User already exists. Please Login");
     }
     
-    res.status(200).send("Please Continue");
+    res.status(200).send({ email: email, password: password });
 
   } catch (err) {
     console.log(err);
@@ -61,7 +61,7 @@ const signUp = async (req, res) => {
     user.token = token;
 
     // return new user
-    res.status(201).send("Account is created successfully");
+    res.status(201).json({user, token});
   } catch (err) {
     res.status(500).send("Sign-up Failed")
     console.log(err);
