@@ -9,18 +9,19 @@ const deleteUser = (socket_id) => {
 };
 
 const getUser = (receiver_id) => {
+	console.log(users);
 	return users.filter((user) => user.user_id === receiver_id);
 };
 
 module.exports = (socket, io) => {
 	socket.on("addUser", (data) => {
 		addUser({ ...data, socket_id: socket.id });
-		console.log(users);
+		console.log("add", users);
 	});
 	socket.on("senderTyping", (data) => {
 		console.log(data.receiver_id);
 		const user = getUser(data.receiver_id);
-		console.log(user);
+		console.log("typing", user);
 		if (user.length === 1) {
 			console.log(data);
 			io.to(user[0].socket_id).emit("senderTyping", data);
@@ -39,6 +40,6 @@ module.exports = (socket, io) => {
 
 	socket.on("disconnect", () => {
 		deleteUser(socket.id);
-		console.log(users);
+		console.log("deleted", users);
 	});
 };

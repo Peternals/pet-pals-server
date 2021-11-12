@@ -1,9 +1,10 @@
 const express = require("express");
 const message = require("../controllers/messageController");
+const verifyToken = require("../middleware/verifyToken");
 
 const route = express.Router();
 //get all users conversations
-route.get("/conversations", message.getAllConversations);
+route.get("/conversations", verifyToken, message.getAllConversations);
 //add conversation
 route.post("/conversations", message.addConversation);
 

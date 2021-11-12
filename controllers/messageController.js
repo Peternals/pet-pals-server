@@ -4,7 +4,7 @@ const Message = require("../models/Message");
 const addConversation = async (req, res) => {
 	try {
 		//sampple
-		const members = ["618c891a6044dd9c35bfdefe", "618c89aa6044dd9c35bfdf08"];
+		const members = ["618e68b8206149d0d25789df", "618e68e5206149d0d25789e2"];
 		const checkIfExist = await Conversation.find({
 			members: { $all: members },
 		});
@@ -21,9 +21,9 @@ const addConversation = async (req, res) => {
 const getAllConversations = async (req, res) => {
 	try {
 		//sample token
-		const token = "618c891a6044dd9c35bfdefe";
+		const { user_id } = req.user;
 		const usersConversation = await Conversation.find({
-			members: { $all: [token] },
+			members: { $all: [user_id] },
 		});
 		res.send(usersConversation);
 	} catch (error) {
