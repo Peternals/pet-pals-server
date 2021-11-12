@@ -12,6 +12,7 @@ app.use(express.urlencoded({
 app.use("/auth", require("./routes/auth"));
 app.use("/user", require("./routes/user"));
 app.use("/pet", require("./routes/pet"));
+app.use("/pic", require("./routes/upload"));
 
 const port = process.env.PORT || 4000;
 
