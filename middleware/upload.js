@@ -3,7 +3,7 @@ const multer = require('multer');
 const { GridFsStorage } = require('multer-gridfs-storage');
 require('dotenv').config();
 
-const strage = new GridFsStorage({
+const storage = new GridFsStorage({
     url: process.env.MONGO_URL,
     options: {
         useNewUrlParser: true,
@@ -24,6 +24,6 @@ const strage = new GridFsStorage({
     }
 });
 
-const uploadFile = multer({ strage }).single('file');
+const uploadFile = multer({ storage }).single('file');
 const uploadFilesMiddleware = util.promisify(uploadFile);
 module.exports = uploadFilesMiddleware;
