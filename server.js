@@ -2,7 +2,7 @@ const express = require("express");
 const Socket = require("socket.io");
 const cors = require("cors");
 const db = require("./db");
-const userRoute = require("./routes/user");
+const morgan = require("morgan");
 
 const app = express();
 app.use(cors());
@@ -14,8 +14,12 @@ app.use(
 	})
 );
 const port = process.env.PORT || 4000;
+app.use(morgan("dev"));
+app.use(cors());
 
 app.use("/auth", require("./routes/auth"));
+app.use("/user", require("./routes/user"));
+app.use("/pet", require("./routes/pet"));
 
 app.get("/test", async (req, res) => {
 	res.send("jhgjg");
@@ -23,9 +27,6 @@ app.get("/test", async (req, res) => {
 
 //route for messages
 app.use("/messages", require("./routes/message"));
-
-//routes for users
-app.use("/users", userRoute);
 
 const server = app.listen(port, () => {
 	console.log(`listening to port ${port}`);

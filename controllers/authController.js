@@ -4,9 +4,9 @@ const jwt = require("jsonwebtoken");
 const db = require('../db');
 const User = require('../models/User')
 
-const signUp = async (req, res) => {
+const validation = async (req, res) => {
 
-   try {
+  try {
     // Get user input
     const { email, password } = req.body;
     console.log(req.body);
@@ -19,17 +19,34 @@ const signUp = async (req, res) => {
     // check if user already exist
     // Validate if user exist in our database
     const oldUser = await User.find({ "email": email });
-    if (oldUser) {
-      return res.status(409).send("User Already Exist. Please Login");
+    if (oldUser.length) {
+      return res.status(409).send("User already exists. Please Login");
     }
+    
+    res.status(200).send("Please Continue");
+
+  } catch (err) {
+    console.log(err);
+    res.status(403).send("Invalid User");
+  }
+};
+
+const signUp = async (req, res) => {
+
+   try {
+    const { username, email, password, description, profile_picture, type } = req.body;
 
     //Encrypt user password
     encryptedPassword = await bcrypt.hash(password, 10);
 
     // Create user in our database
     const user = await User.create({
+      username: username, 
       email: email.toLowerCase(), // sanitize: convert email to lowercase
       password: encryptedPassword,
+      description: description,
+      profile_picture: profile_picture,
+      type: type,
     });
 
     // Create token
@@ -44,8 +61,9 @@ const signUp = async (req, res) => {
     user.token = token;
 
     // return new user
-    res.status(201).json(user);
+    res.status(201).send("Account is created successfully");
   } catch (err) {
+    res.status(500).send("Sign-up Failed")
     console.log(err);
   }
 };
@@ -62,7 +80,7 @@ const signIn = async (req, res) => {
       res.status(400).send("All input is required");
     }
     // Validate if user exist in our database
-    const user = await db.User.findOne({ "email": email });
+    const user = await User.findOne({ "email": email });
 
     if (user && (await bcrypt.compare(password, user.password))) {
       // Create token
@@ -73,15 +91,14 @@ const signIn = async (req, res) => {
           expiresIn: "1h",
         }
       );
-
-      // save user token
-      user.token = token;
-
       // user
-      res.status(200).json(user);
+      res.status(200).json({user, token});
     }
-    res.status(400).send("Invalid Credentials");
+    else {
+      res.status(400).send("Invalid Credentials");
+    }
   } catch (err) {
+    res.status(500).send("Sign-in Failed")
     console.log(err);
   }
 };
@@ -91,6 +108,7 @@ const verify = (req, res) => {
 }
 
 module.exports = {
+  validation,
 	signIn,
   signUp,
   verify,
