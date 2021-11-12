@@ -13,7 +13,7 @@ const strage = new GridFsStorage({
         const match = ["image/png", "image/jpeg"];
 
         if (match.indexOf(file.mimetype) === -1) {
-            const filename = `${Date.now()}-petapp-${file.originalname}`
+            const filename = `${Date.now()}-petapp-${file.originalname}`;
             return filename;
         }
 
