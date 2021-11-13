@@ -18,8 +18,7 @@ const uploadFiles = async (req, res) => {
         if (req.file === undefined) {
             return res.send('You must select a file.')
         }
-
-        return res.send("File has been uploaded!");
+        return res.send(req.file);
 
     } catch (err) {
         console.log(err);
