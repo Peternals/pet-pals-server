@@ -1,13 +1,14 @@
 const upload = require('../middleware/upload');
-require('dotenv').config();
+const mongoose = require('mongoose');
 
-const MongoClient = require('mongodb').MongoClient;
-//const GridFSBucket = require('mongodb').GridFSBucket;
-
-const url = process.env.MONGO_URL;
-const baseUrl = "http://localhost:4000/file/";
-
-const mongoClient = new MongoClient(url);
+let gfs;
+const conn = mongoose.connection;
+conn.once("open", () => {
+    gfs = new mongoose.mongo.GridFSBucket(
+        conn.db, {
+        bucketName: "photos"
+    });
+});
 
 const uploadFiles = async (req, res) => {
     try {
@@ -26,35 +27,26 @@ const uploadFiles = async (req, res) => {
     }
 };
 
-const getFiles = async (req, res) => {
+const getSingleImage = async (req, res) => {
     try {
-        await mongoClient.connect();
-        
-        const database = mongoClient.db(process.env.DB)
-        const images = database.collection("photos.files");
-        
-        const cursor = images.find({});
-        
-        if ((await cursor.count()) === 0) {
-            return res.status(500).send('No files found.');
-        }
+		await gfs.openDownloadStreamByName(req.params.filename).pipe(res);
+	} catch (err) {
+		res.status(500).send(err);
+	}
+};
 
-        let fileInfo = [];
-        await cursor.forEach((doc) => {
-            fileInfo.push({
-                name: doc.filename,
-                url: baseUrl + doc.filename
-            });
-        });
-        return res.status(200).send(fileInfo);
-
-    } catch(err) {
-        return res.status(500).send(err);
+const deleteImage = async (req, res) => {
+    try {
+        await gfs.delete(new mongoose.Types.ObjectId(req.params.id));
+        res.status(200).send('File has been deleted.');
+    } catch (err) {
+        res.status(500).send(err);
     }
 };
 
 
 module.exports = {
     uploadFiles,
-    getFiles
+    getSingleImage,
+    deleteImage
 }
