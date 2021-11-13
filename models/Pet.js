@@ -18,7 +18,12 @@ const PetSchema = new mongoose.Schema({
     },
     pet_pictures: {
         type: Array
-    }
+    },
+    request_ids: [
+        {
+            type: String
+        }
+    ]
 });
 
 module.exports = mongoose.model('Pet', PetSchema);
