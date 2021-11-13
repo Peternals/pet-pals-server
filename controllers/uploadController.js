@@ -5,7 +5,7 @@ const MongoClient = require('mongodb').MongoClient;
 //const GridFSBucket = require('mongodb').GridFSBucket;
 
 const url = process.env.MONGO_URL;
-const baseUrl = "http://localhost:4000/files/";
+const baseUrl = "http://localhost:4000/file/";
 
 const mongoClient = new MongoClient(url);
 
