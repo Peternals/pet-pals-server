@@ -4,7 +4,7 @@ const Message = require("../models/Message");
 const addConversation = async (req, res) => {
 	try {
 		//sampple
-		const members = ["618e68b8206149d0d25789df", "618e68e5206149d0d25789e2"];
+		const members = ["618fa057196cabc2a2c87eda", "618f883764f9c205fba3c43f"];
 		const checkIfExist = await Conversation.find({
 			members: { $all: members },
 		});
