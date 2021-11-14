@@ -17,7 +17,7 @@ const PetSchema = new mongoose.Schema({
         default: ""
     },
     pet_pictures: {
-        type: Array
+        type: String
     },
     request_ids: [
         {

@@ -37,8 +37,19 @@ const getPet = async (req, res) => {
 // get pet info by ower_id
 const getPetByOwnerId = async (req, res) => {
     try {
-        const pet = await Pet.findOne({owner_id: req.params.owner_id});
+        const pet = await Pet.findOne({ owner_id: req.params.owner_id });
         res.status(200).send(pet);
+    } catch (err) {
+        console.log(err);
+        res.status(500).send(err);
+    }
+}
+
+// get pets by pet type
+const getPetsByType = async (req, res) => {
+    try {
+        const pets = await Pet.find({ type: req.params.type });
+        res.status(200).send(pets);
     } catch (err) {
         console.log(err);
         res.status(500).send(err);
@@ -74,6 +85,7 @@ module.exports = {
     getPet,
     getAllPets,
     getPetByOwnerId,
+    getPetsByType,
     updatePet,
     deletePet
 }
