@@ -1,11 +1,24 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const ConversationSchema = new mongoose.Schema({
-    members: {
-        type: Array
-    }
-},
-    { timestamps: true }
+const SeenSchema = new mongoose.Schema({
+	userId: {
+		type: String,
+		required: true,
+	},
+	state: {
+		type: Boolean,
+		default: false,
+	},
+});
+
+const ConversationSchema = new mongoose.Schema(
+	{
+		members: {
+			type: Array,
+		},
+		seen: [SeenSchema],
+	},
+	{ timestamps: true }
 );
 
-module.exports = mongoose.model('Conversations', ConversationSchema);
+module.exports = mongoose.model("Conversations", ConversationSchema);
