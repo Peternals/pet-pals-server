@@ -23,16 +23,6 @@ const addPet = async (req, res) => {
   }
 };
 
-const getAllPets = async (req, res) => {
-  try {
-    const pets = await Pet.find();
-    res.status(200).send(pets);
-  } catch (err) {
-    console.log(err);
-    res.status(500).send(err);
-  }
-};
-
 // get pet info
 const getPet = async (req, res) => {
   try {
