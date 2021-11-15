@@ -12,17 +12,12 @@ conn.once("open", () => {
 const uploadFiles = async (req, res) => {
   try {
     await upload(req, res);
-    // console.log(req.file);
     console.log(req.files);
-
-    // if (req.file === undefined) {
-    //   return res.send("You must select a file.");
-    // }
-    // return res.send(req.file);
 
     if (req.files.length <= 0) {
       res.status(400).send("You must select at least 1 file.");
     }
+
     res.status(200).send(req.files);
   } catch (err) {
     console.log(err);
