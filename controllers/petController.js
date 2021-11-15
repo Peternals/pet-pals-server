@@ -13,9 +13,15 @@ const getAllPets = async (req, res) => {
 
 // add pet info
 const addPet = async (req, res) => {
-  const pet = new Pet(req.body);
   try {
-    const savedPet = await pet.save();
+    const { name, description, pet_picture, type, owner_id } = req.body;
+    const savedPet = await Pet.create({
+      name: name,
+      description: description,
+      pet_picture: pet_picture,
+      type: type,
+      owner_id: owner_id,
+    });
     res.status(200).send(savedPet);
   } catch (err) {
     console.log(err);
