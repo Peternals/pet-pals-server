@@ -17,7 +17,8 @@ const PetSchema = new mongoose.Schema({
     default: "",
   },
   pet_pictures: {
-    type: String,
+    type: Array,
+    default: [],
   },
   questionnaire: [
     {
