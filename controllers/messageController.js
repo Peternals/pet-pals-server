@@ -39,13 +39,33 @@ const getAllConversations = async (req, res) => {
 	}
 };
 
+const getLastMessage = async (req, res) => {
+	try {
+		console.log(req.params.id);
+		const conversation = await Message.find({
+			conversation_id: req.params.id,
+		}).sort({
+			createdAt: -1,
+		});
+		res.send(conversation[0] ? conversation[0].text : "");
+	} catch (error) {
+		console.log(error);
+	}
+};
+
 const getAllMessages = async (req, res) => {
 	try {
 		const { user_id } = req.user;
-		await Conversation.findOneAndUpdate(
-			{ _id: req.params.id, [`seen.userId`]: { $eq: user_id } },
-			{ [`seen.$.state`]: true }
-		);
+		const conversation = await Conversation.find({ _id: req.params.id });
+		console.log(conversation);
+		const check = conversation[0].seen.find((seen) => seen.userId === user_id);
+		console.log(check);
+		if (check.state === false) {
+			await Conversation.findOneAndUpdate(
+				{ _id: req.params.id, [`seen.userId`]: { $eq: user_id } },
+				{ [`seen.$.state`]: true }
+			);
+		}
 		const usersMessages = await Message.find({
 			conversation_id: req.params.id,
 		});
@@ -68,6 +88,10 @@ const saveMessages = async (req, res) => {
 			{ _id: conversation_id, ["seen.userId"]: { $eq: receiver_id } },
 			{ [`seen.$.state`]: false }
 		);
+		await Conversation.findOneAndUpdate(
+			{ _id: conversation_id, ["seen.userId"]: { $eq: sender_id } },
+			{ [`seen.$.state`]: true }
+		);
 		await Message.create({ conversation_id, sender_id, text });
 		res.sendStatus(200);
 	} catch (error) {
@@ -80,4 +104,5 @@ module.exports = {
 	getAllConversations,
 	getAllMessages,
 	saveMessages,
+	getLastMessage,
 };

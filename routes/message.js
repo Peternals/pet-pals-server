@@ -10,6 +10,7 @@ route.get("/conversations", message.getAllConversations);
 route.post("/conversations", message.addConversation);
 
 //get all messages in conversation
+route.get("/last/:id", message.getLastMessage);
 route.get("/:id", message.getAllMessages);
 route.post("/", message.saveMessages);
 module.exports = route;
