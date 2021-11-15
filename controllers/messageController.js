@@ -57,14 +57,15 @@ const getAllMessages = async (req, res) => {
 
 const saveMessages = async (req, res) => {
 	try {
-		const { conversation_id, sender_id, text } = req.body;
+		const { conversation_id, sender_id, text, receiver_id } = req.body;
+		console.log("sdsd", sender_id, req.user.user_id);
 		await Conversation.findOneAndUpdate(
 			{ _id: conversation_id },
 			{ updatedAt: new Date() }
 		);
 
 		await Conversation.findOneAndUpdate(
-			{ _id: conversation_id, [`seen.userId`]: { $ne: sender_id } },
+			{ _id: conversation_id, ["seen.userId"]: { $eq: receiver_id } },
 			{ [`seen.$.state`]: false }
 		);
 		await Message.create({ conversation_id, sender_id, text });
