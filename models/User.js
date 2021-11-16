@@ -30,7 +30,7 @@ const UserSchema = new mongoose.Schema({
 		required: true,
 	},
 	Carer: CarerSchema,
-	Owner: OwnerSchema
+	Owner: OwnerSchema,
 });
 
 module.exports = mongoose.model("User", UserSchema, "Users");
