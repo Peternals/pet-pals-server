@@ -6,8 +6,6 @@ const { update } = require("../models/User");
 const updateUser = async (req, res) => {
 	const request_data = req.body.data;
 	const request_id = req.body._id;
-  console.log(request_id);
-  console.log(req.params.id);
 
 	if (request_id === req.params.id) {
 		// if a user want to change password we need to hash it again
@@ -21,14 +19,11 @@ const updateUser = async (req, res) => {
 		}
 	}
 	try {
-		console.log(request_data);
 		const result = await User.updateOne({ _id: req.params.id }, { $set: request_data }, { multi: true });
-		console.log(result);
 		if (result.modifiedCount === 1) {
 			const user = await User.findOne({ _id: req.params.id });
 			res.status(200).send(user);
 		}
-		// console.log(user);
 	
 	} catch (err) {
 		res.status(500).send(err);
