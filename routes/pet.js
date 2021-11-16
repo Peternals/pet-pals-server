@@ -11,5 +11,6 @@ router.get("/type/:type", pet.getPetsByType);
 router.get("/:id", pet.getPet);
 router.patch("/:id", pet.updatePet);
 router.delete("/:id", pet.deletePet);
+router.get("/requests/:id", pet.getRequestsForPet);
 
 module.exports = router;
