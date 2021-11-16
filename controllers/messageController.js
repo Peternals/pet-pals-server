@@ -3,18 +3,18 @@ const Message = require("../models/Message");
 
 const addConversation = async (req, res) => {
 	try {
-		//sampple
-		const members = ["61907b4ab2074915baac9cb0", "61907ec10db74d6c4d0e7cb6"];
+		const { user_id } = req.user;
+		const members = [user_id, req.body.user_id];
 		const checkIfExist = await Conversation.find({
 			members: { $all: members },
 		});
 		if (checkIfExist.length === 0) {
 			const seen = [
 				{
-					userId: "61907b4ab2074915baac9cb0",
+					userId: user_id,
 				},
 				{
-					userId: "61907ec10db74d6c4d0e7cb6",
+					userId: req.body.user_id,
 				},
 			];
 			const createAction = await Conversation.create({ members, seen });
