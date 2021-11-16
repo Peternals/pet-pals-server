@@ -21,11 +21,13 @@ const updateUser = async (req, res) => {
 		}
 	}
 	try {
-		console.log("Helloooooooo");
 		console.log(request_data);
-		const result = await User.updateOne({ _id: req.params.id }, { $set: {'email': 'test1@gmail.com'} });
+		const result = await User.updateOne({ _id: req.params.id }, { $set: request_data }, { multi: true });
 		console.log(result);
-		res.status(200).send(user);
+		if (result.modifiedCount === 1) {
+			const user = await User.findOne({ _id: req.params.id });
+			res.status(200).send(user);
+		}
 		// console.log(user);
 	
 	} catch (err) {
