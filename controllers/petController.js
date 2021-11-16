@@ -14,11 +14,11 @@ const getAllPets = async (req, res) => {
 // add pet info
 const addPet = async (req, res) => {
   try {
-    const { name, description, pet_picture, type, owner_id } = req.body;
+    const { name, description, pet_pictures, type, owner_id } = req.body;
     const savedPet = await Pet.create({
       name: name,
       description: description,
-      pet_picture: pet_picture,
+      pet_pictures: pet_pictures,
       type: type,
       owner_id: owner_id,
     });
