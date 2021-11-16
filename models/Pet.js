@@ -20,6 +20,11 @@ const PetSchema = new mongoose.Schema({
     type: Array,
     default: [],
   },
+  questionnaire: [
+    {
+      type: String,
+    },
+  ],
 });
 
 module.exports = mongoose.model("Pet", PetSchema);

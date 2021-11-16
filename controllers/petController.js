@@ -22,7 +22,6 @@ const addPet = async (req, res) => {
       type: type,
       owner_id: owner_id,
     });
-
     res.status(200).send(savedPet);
   } catch (err) {
     console.log(err);
@@ -56,7 +55,7 @@ const getPetByOwnerId = async (req, res) => {
 // get pets by pet type
 const getPetsByType = async (req, res) => {
   try {
-    const pets = await Pet.find({ type: req.params.type });
+    const pets = await Pet.find({ type: req.params.type.toLowerCase() });
     res.status(200).send(pets);
   } catch (err) {
     console.log(err);
@@ -88,6 +87,17 @@ const deletePet = async (req, res) => {
   }
 };
 
+// get all requests for pet
+const getRequestsForPet = async (req, res) => {
+  try {
+    const pet = await Pet.findById(req.params.id);
+    res.status(404).send("Route not implemented yet");
+  } catch (err) {
+    console.error(err);
+    res.status(500).send(err);
+  }
+};
+
 module.exports = {
   addPet,
   getPet,
@@ -96,4 +106,5 @@ module.exports = {
   updatePet,
   deletePet,
   getAllPets,
+  getRequestsForPet,
 };

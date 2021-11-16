@@ -1,4 +1,6 @@
 const mongoose = require("mongoose");
+const CarerSchema = require("./Carer");
+const OwnerSchema = require("./Owner");
 
 const UserSchema = new mongoose.Schema({
 	username: {
@@ -27,6 +29,8 @@ const UserSchema = new mongoose.Schema({
 		type: String,
 		required: true,
 	},
+	Carer: CarerSchema,
+	Owner: OwnerSchema
 });
 
 module.exports = mongoose.model("User", UserSchema, "Users");

@@ -1,9 +1,32 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const CarerSchema = new mongoose.Schema({
-    user_id: {
-        type: String
-    }
+const QuestionSchema = new mongoose.Schema({
+  question: {
+    type: String,
+  },
+  answer: {
+    type: String,
+  },
 });
 
-module.exports = mongoose.model('Carer', CarerSchema);
+const RequestSchema = new mongoose.Schema({
+  pet_id: {
+    type: String,
+  },
+  start: {
+    type: Date,
+  },
+  end: {
+    type: Date,
+  },
+  status: {
+    type: String,
+  },
+  questionnaire: [QuestionSchema],
+});
+
+const CarerSchema = new mongoose.Schema({
+  requests: [RequestSchema],
+});
+
+module.exports = CarerSchema;
