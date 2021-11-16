@@ -2,7 +2,7 @@ const router = require("express").Router();
 const pet = require("../controllers/petController");
 const verifyToken = require("../middleware/verifyToken");
 
-router.use("/", verifyToken);
+// router.use("/", verifyToken);
 
 router.get("/", pet.getAllPets);
 router.post("/", pet.addPet);
