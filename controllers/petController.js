@@ -55,7 +55,7 @@ const getPetByOwnerId = async (req, res) => {
 // get pets by pet type
 const getPetsByType = async (req, res) => {
   try {
-    const pets = await Pet.find({ type: req.params.type });
+    const pets = await Pet.find({ type: req.params.type.toLowerCase() });
     res.status(200).send(pets);
   } catch (err) {
     console.log(err);
