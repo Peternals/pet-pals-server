@@ -87,6 +87,17 @@ const deletePet = async (req, res) => {
   }
 };
 
+// get all requests for pet
+const getRequestsForPet = async (req, res) => {
+  try {
+    const pet = await Pet.findById(req.params.id);
+    res.status(404).send("Route not implemented yet");
+  } catch (err) {
+    console.error(err);
+    res.status(500).send(err);
+  }
+};
+
 module.exports = {
   addPet,
   getPet,
@@ -95,4 +106,5 @@ module.exports = {
   updatePet,
   deletePet,
   getAllPets,
+  getRequestsForPet,
 };
