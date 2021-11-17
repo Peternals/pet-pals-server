@@ -1,4 +1,4 @@
-const CarerSchema = require("../models/Carer");
+const Pet = require("../models/Pet");
 const User = require("../models/User");
 
 const modifyRequest = async (req, res) => {
@@ -15,6 +15,40 @@ const modifyRequest = async (req, res) => {
 	}
 };
 
+const getRequestsForPet = async (req, res) => {
+	try {
+		const { user_id } = req.user;
+		console.log(user_id);
+
+		const userPets = await Pet.find({ owner_id: user_id }, { _id: 1 });
+		const petsIds = userPets.map((id) => id._id.toString());
+		const request = await User.aggregate([
+			{
+				$unwind: "$Carer.requests",
+			},
+			{
+				$match: {
+					"Carer.requests.status": req.params.status,
+					"Carer.requests.pet_id": { $in: petsIds },
+				},
+			},
+			{
+				$project: {
+					_id: "$_id",
+					request: "$Carer.requests",
+					username: "$username",
+					profile_picture: "$profile_picture",
+				},
+			},
+		]);
+		res.send(request);
+	} catch (err) {
+		console.error(err);
+		res.status(500).send(err);
+	}
+};
+
 module.exports = {
 	modifyRequest,
+	getRequestsForPet,
 };

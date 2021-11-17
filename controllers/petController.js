@@ -1,6 +1,4 @@
 const Pet = require("../models/Pet");
-const Carer = require("../models/Carer");
-const User = require("../models/User");
 
 //get all pets
 const getAllPets = async (req, res) => {
@@ -90,38 +88,6 @@ const deletePet = async (req, res) => {
 };
 
 // get all requests for pet
-const getRequestsForPet = async (req, res) => {
-	try {
-		const { user_id } = req.user;
-		console.log(user_id);
-
-		const userPets = await Pet.find({ owner_id: user_id }, { _id: 1 });
-		const petsIds = userPets.map((id) => id._id.toString());
-		const request = await User.aggregate([
-			{
-				$unwind: "$Carer.requests",
-			},
-			{
-				$match: {
-					"Carer.requests.status": "Pending",
-					"Carer.requests.pet_id": { $in: petsIds },
-				},
-			},
-			{
-				$project: {
-					_id: "$_id",
-					request: "$Carer.requests",
-					username: "$username",
-					profile_picture: "$profile_picture",
-				},
-			},
-		]);
-		res.send(request);
-	} catch (err) {
-		console.error(err);
-		res.status(500).send(err);
-	}
-};
 
 module.exports = {
 	addPet,
@@ -131,5 +97,4 @@ module.exports = {
 	updatePet,
 	deletePet,
 	getAllPets,
-	getRequestsForPet,
 };
