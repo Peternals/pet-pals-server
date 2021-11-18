@@ -59,27 +59,30 @@ const getPetsByType = async (req, res) => {
 };
 
 const updatePet = async (req, res) => {
+  console.log("1", req.body);
   try {
     const resultImg = await Pet.updateOne(
       { _id: req.params.id },
       {
         $push: {
-          pet_pictures: req.body.data.pet_pictures,
+          pet_pictures: req.body.pet_pictures,
         },
       }
     );
-
+    console.log("2", req.body);
     const result = await Pet.updateOne(
       { _id: req.params.id },
       {
         $set: {
-          name: req.body.data.name,
-          description: req.body.data.description,
+          name: req.body.name,
+          description: req.body.description,
         },
       },
       { multi: true }
     );
-    if (result.modifiedCount === 1 && resultImg.modifiedCount === 1) {
+    console.log("3", req.body);
+    console.log("result:", result, "resultImg:", resultImg);
+    if (result.modifiedCount === 1 || resultImg.modifiedCount === 1) {
       const pet = await Pet.findById(req.params.id);
       res.status(200).send(pet);
     }
