@@ -50,9 +50,6 @@ const signUp = async (req, res) => {
 		const token = jwt.sign(
 			{ user_id: user._id },
 			process.env.ACCESS_TOKEN_SECRET,
-			{
-				expiresIn: "1h",
-			}
 		);
 		// save user token
 		user.token = token;
@@ -83,9 +80,6 @@ const signIn = async (req, res) => {
 			const token = jwt.sign(
 				{ user_id: user._id },
 				process.env.ACCESS_TOKEN_SECRET,
-				{
-					expiresIn: "1h",
-				}
 			);
 			// user
 			res.status(200).json({ user, token });
