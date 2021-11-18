@@ -17,6 +17,7 @@ const updateUser = async (req, res) => {
       try {
         const salt = await bcrypt.genSalt(10);
         request_data.password = await bcrypt.hash(request_data.password, salt);
+				console.log(request_data.password);
       } catch (err) {
         res.status(500).send(err);
       }
