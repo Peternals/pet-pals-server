@@ -46,6 +46,7 @@ const signUp = async (req, res) => {
       type: type,
     });
 
+<<<<<<< HEAD
     // Create token
     const token = jwt.sign(
       { user_id: user._id },
@@ -56,6 +57,15 @@ const signUp = async (req, res) => {
     );
     // save user token
     user.token = token;
+=======
+		// Create token
+		const token = jwt.sign(
+			{ user_id: user._id },
+			process.env.ACCESS_TOKEN_SECRET,
+		);
+		// save user token
+		user.token = token;
+>>>>>>> 89402b14b53c696751d60634a84a63e53846ae7d
 
     // return new user
     res.status(201).json({ user, token });
@@ -78,24 +88,21 @@ const signIn = async (req, res) => {
     // Validate if user exist in our database
     const user = await User.findOne({ email: email });
 
-    if (user && (await bcrypt.compare(password, user.password))) {
-      // Create token
-      const token = jwt.sign(
-        { user_id: user._id },
-        process.env.ACCESS_TOKEN_SECRET,
-        {
-          expiresIn: "1h",
-        }
-      );
-      // user
-      res.status(200).json({ user, token });
-    } else {
-      res.status(400).send("Invalid Credentials");
-    }
-  } catch (err) {
-    res.status(500).send("Sign-in Failed");
-    console.log(err);
-  }
+		if (user && (await bcrypt.compare(password, user.password))) {
+			// Create token
+			const token = jwt.sign(
+				{ user_id: user._id },
+				process.env.ACCESS_TOKEN_SECRET,
+			);
+			// user
+			res.status(200).json({ user, token });
+		} else {
+			res.status(400).send("Invalid Credentials");
+		}
+	} catch (err) {
+		res.status(500).send("Sign-in Failed");
+		console.log(err);
+	}
 };
 
 const verify = (req, res) => {
