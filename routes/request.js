@@ -5,6 +5,7 @@ const route = express.Router();
 
 route.use("/", verifyToken);
 
+route.post("/", request.addRequest);
 route.get("/:status", request.getRequestsForPet);
 route.patch("/:id", request.modifyRequest);
 
