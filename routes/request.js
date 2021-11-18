@@ -6,7 +6,8 @@ const route = express.Router();
 route.use("/", verifyToken);
 
 route.post("/", request.addRequest);
-route.get("/:status", request.getRequestsForPet);
+route.get("/:status/:id", request.getRequestsByStatusAndPetId);
+route.get("/:status", request.getRequestsForPetOwner);
 route.patch("/:id", request.modifyRequest);
 
 module.exports = route;
