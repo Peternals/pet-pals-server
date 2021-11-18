@@ -54,7 +54,7 @@ const getCarerPendingRequest = async (req, res) => {
     console.log(error);
   }
 };
-//if approve or rejected
+//if approve or rejectedd
 const modifyRequest = async (req, res) => {
   try {
     const { request_id, user_id, action } = req.body;
