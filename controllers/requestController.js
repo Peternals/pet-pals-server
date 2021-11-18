@@ -1,6 +1,60 @@
 const Pet = require("../models/Pet");
 const User = require("../models/User");
-//if approve or rejected
+const mongoose = require("mongoose");
+
+//get upcomming requests
+const getUpcomingRequest = async (req, res) => {
+  try {
+    const currentDay = new Date().setHours(0, 0, 0, 0);
+    const request = await User.aggregate([
+      { $unwind: "$Carer.requests" },
+      {
+        $match: {
+          "Carer.requests.start": {
+            $gte: new Date(currentDay),
+          },
+
+          _id: mongoose.Types.ObjectId(req.user.user_id),
+        },
+      },
+      {
+        $project: {
+          request: "$Carer.requests",
+        },
+      },
+    ]);
+    res.send(request);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+//carer pending requests
+const getCarerPendingRequest = async (req, res) => {
+  try {
+    const request = await User.aggregate([
+      { $unwind: "$Carer.requests" },
+      {
+        $match: {
+          "Carer.requests.status": {
+            $eq: "Pending",
+          },
+
+          _id: mongoose.Types.ObjectId(req.user.user_id),
+        },
+      },
+      {
+        $project: {
+          request: "$Carer.requests",
+        },
+      },
+    ]);
+    res.send(request);
+  } catch (error) {
+    console.log(error);
+  }
+};
+//if approve or rejectedd
 const modifyRequest = async (req, res) => {
   try {
     const { request_id, user_id, action } = req.body;
@@ -62,4 +116,6 @@ module.exports = {
   modifyRequest,
   getRequestsForPet,
   addRequest,
+  getUpcomingRequest,
+  getCarerPendingRequest,
 };
