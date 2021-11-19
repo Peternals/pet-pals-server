@@ -72,19 +72,35 @@ const modifyRequest = async (req, res) => {
 const getRequestsForPetOwner = async (req, res) => {
   try {
     const { user_id } = req.user;
-    console.log(user_id);
+    const currentDay = new Date().setHours(0, 0, 0, 0);
+    console.log(new Date(currentDay));
 
     const userPets = await Pet.find({ owner_id: user_id }, { _id: 1 });
     const petsIds = userPets.map((id) => id._id.toString());
+
+    const match =
+      req.params.status === "Approved"
+        ? {
+            $match: {
+              "Carer.requests.status": req.params.status,
+              "Carer.requests.pet_id": { $in: petsIds },
+              "Carer.requests.end": {
+                $gte: new Date(currentDay),
+              },
+            },
+          }
+        : {
+            $match: {
+              "Carer.requests.status": req.params.status,
+              "Carer.requests.pet_id": { $in: petsIds },
+            },
+          };
     const request = await User.aggregate([
       {
         $unwind: "$Carer.requests",
       },
       {
-        $match: {
-          "Carer.requests.status": req.params.status,
-          "Carer.requests.pet_id": { $in: petsIds },
-        },
+        ...match,
       },
       {
         $project: {
@@ -95,6 +111,7 @@ const getRequestsForPetOwner = async (req, res) => {
         },
       },
     ]);
+    console.log(request);
     res.send(request);
   } catch (err) {
     console.error(err);
