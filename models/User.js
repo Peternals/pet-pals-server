@@ -29,9 +29,11 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  interest: {
-    type: String,
-  },
+  interests: [
+    {
+      type: String,
+    },
+  ],
   Carer: CarerSchema,
   Owner: OwnerSchema,
 });
