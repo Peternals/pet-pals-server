@@ -9,6 +9,8 @@ route.get("/owner/:status", request.getRequestsForPet);
 route.get("/upcoming", request.getUpcomingRequest);
 route.get("/pending", request.getCarerPendingRequest);
 route.post("/", request.addRequest);
+route.get("/:status/:id", request.getRequestsByStatusAndPetId);
+route.get("/:status", request.getRequestsForPetOwner);
 route.patch("/:id", request.modifyRequest);
 
 module.exports = route;
