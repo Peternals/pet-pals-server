@@ -69,7 +69,7 @@ const modifyRequest = async (req, res) => {
   }
 };
 //get requests
-const getRequestsForPet = async (req, res) => {
+const getRequestsForPetOwner = async (req, res) => {
   try {
     const { user_id } = req.user;
     console.log(user_id);
@@ -102,6 +102,37 @@ const getRequestsForPet = async (req, res) => {
   }
 };
 
+const getRequestsByStatusAndPetId = async (req, res) => {
+  try {
+    const pet_id = req.params.id;
+    const status = req.params.status;
+
+    const request = await User.aggregate([
+      {
+        $unwind: "$Carer.requests",
+      },
+      {
+        $match: {
+          "Carer.requests.status": status,
+          "Carer.requests.pet_id": pet_id,
+        },
+      },
+      {
+        $project: {
+          _id: "$_id",
+          request: "$Carer.requests",
+          username: "$username",
+          profile_picture: "$profile_picture",
+        },
+      },
+    ]);
+    res.send(request);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send(err);
+  }
+};
+
 //add request
 const addRequest = async (req, res) => {
   try {
@@ -114,7 +145,8 @@ const addRequest = async (req, res) => {
 };
 module.exports = {
   modifyRequest,
-  getRequestsForPet,
+  getRequestsForPetOwner,
+  getRequestsByStatusAndPetId,
   addRequest,
   getUpcomingRequest,
   getCarerPendingRequest,
