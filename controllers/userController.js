@@ -4,12 +4,8 @@ const { update } = require("../models/User");
 
 // update user info
 const updateUser = async (req, res) => {
-  //change this thing, might conflict with eiko's code
-  const request_data = req.body;
+  const request_data = req.body.data;
   const request_id = req.body._id;
-  console.log("1", request_id);
-  console.log("2", req.params.id);
-  console.log("3", request_data);
 
   if (request_id === req.params.id) {
     // if a user want to change password we need to hash it again

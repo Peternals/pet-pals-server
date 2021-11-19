@@ -16,7 +16,10 @@ const addPet = async (req, res) => {
 	try {
 		const { name, description, pet_pictures, type, owner_id, questionnaire, tagNameArr } = req.body;
 
-		const tagObjArr = tagNameArr.map(tagName => await Tags.findOne({ name: tagName }));
+		const tagObjArr = tagNameArr.map(async (tagName) => {
+			const tagObj = await Tags.findOne({ name: tagName });
+			return tagObj;
+		})
 
 		const savedPet = await Pet.create({
 			name: name,
