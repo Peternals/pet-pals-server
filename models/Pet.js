@@ -25,6 +25,11 @@ const PetSchema = new mongoose.Schema({
       type: String,
     },
   ],
+  tag: [
+    {
+      type: Object,
+    },
+  ],
 });
 
 module.exports = mongoose.model("Pet", PetSchema);
