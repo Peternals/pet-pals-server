@@ -61,17 +61,18 @@ const getPetsByType = async (req, res) => {
 };
 
 const updatePet = async (req, res) => {
-  console.log("1", req.body);
+  console.log(req.body);
   try {
-    const resultImg = await Pet.updateOne(
+    const insertResult = await Pet.updateOne(
       { _id: req.params.id },
       {
         $push: {
           pet_pictures: req.body.pet_pictures,
+          questionnaire: req.body.questionnaire,
         },
       }
     );
-    console.log("2", req.body);
+
     const result = await Pet.updateOne(
       { _id: req.params.id },
       {
@@ -82,14 +83,48 @@ const updatePet = async (req, res) => {
       },
       { multi: true }
     );
-    console.log("3", req.body);
-    console.log("result:", result, "resultImg:", resultImg);
-    if (result.modifiedCount === 1 || resultImg.modifiedCount === 1) {
+
+    if (result.acknowledged || insertResult.acknowledged) {
       const pet = await Pet.findById(req.params.id);
       res.status(200).send(pet);
     }
   } catch (err) {
     console.log(err);
+    res.status(500).send(err);
+  }
+};
+
+// not use for now
+const updateQuestionnaire = async (req, res) => {
+  try {
+    const pet = await Pet.findById(req.params.id);
+
+    const result = await pet.updateOne({
+      $push: { questionnaire: req.body.questionnaire },
+    });
+
+    if (result.acknowledged) {
+      const updated = await Pet.findById(req.params.id);
+      res.status(200).send(updated);
+    }
+  } catch (err) {
+    res.status(500).send(err);
+  }
+};
+
+const deleteQuestionnaire = async (req, res) => {
+  try {
+    const pet = await Pet.findById(req.params.id);
+
+    const result = await pet.updateOne({
+      $pull: { questionnaire: req.body.questionnaire },
+    });
+
+    if (result.acknowledged) {
+      const updated = await Pet.findById(req.params.id);
+      res.status(200).send(updated);
+    }
+  } catch (err) {
     res.status(500).send(err);
   }
 };
@@ -112,6 +147,8 @@ module.exports = {
   getPetByOwnerId,
   getPetsByType,
   updatePet,
+  // updateQuestionnaire,
+  deleteQuestionnaire,
   deletePet,
   getAllPets,
 };
