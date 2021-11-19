@@ -14,7 +14,10 @@ const getAllPets = async (req, res) => {
 // add pet info
 const addPet = async (req, res) => {
 	try {
-		const { name, description, pet_pictures, type, owner_id, questionnaire } = req.body;
+		const { name, description, pet_pictures, type, owner_id, questionnaire, tagNameArr } = req.body;
+
+		const tagObjArr = tagNameArr.map(tagName => await Tags.findOne({ name: tagName }));
+
 		const savedPet = await Pet.create({
 			name: name,
 			description: description,
@@ -22,6 +25,7 @@ const addPet = async (req, res) => {
 			type: type,
 			owner_id: owner_id,
 			questionnaire: questionnaire,
+			tags: tagObjArr,
 		});
 		res.status(200).send(savedPet);
 	} catch (err) {
