@@ -8,7 +8,6 @@ const validation = async (req, res) => {
   try {
     // Get user input
     const { email, password } = req.body;
-    console.log(req.body);
 
     // Validate user input
     if (!(email && password)) {
@@ -31,7 +30,7 @@ const validation = async (req, res) => {
 
 const signUp = async (req, res) => {
   try {
-    const { username, email, password, description, profile_picture, type } =
+    const { username, email, password, description, profile_picture, type, interests } =
       req.body;
     //Encrypt user password
     encryptedPassword = await bcrypt.hash(password, 10);
@@ -44,6 +43,7 @@ const signUp = async (req, res) => {
       description: description,
       profile_picture: profile_picture,
       type: type,
+			interests: interests,
     });
 
     // Create token

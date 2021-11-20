@@ -41,7 +41,6 @@ const getAllConversations = async (req, res) => {
 
 const getLastMessage = async (req, res) => {
   try {
-    console.log(req.params.id);
     const conversation = await Message.find({
       conversation_id: req.params.id,
     }).sort({
@@ -60,7 +59,6 @@ const seenConversation = async (req, res) => {
       { _id: req.params.id, [`seen.userId`]: { $eq: user_id } },
       { [`seen.$.state`]: true }
     );
-    console.log("adasdasjd");
     res.sendStatus(200);
   } catch (error) {
     console.log(error);
@@ -69,17 +67,6 @@ const seenConversation = async (req, res) => {
 
 const getAllMessages = async (req, res) => {
   try {
-    const { user_id } = req.user;
-    // const conversation = await Conversation.find({ _id: req.params.id });
-    // console.log(conversation);
-    // const check = conversation[0].seen.find((seen) => seen.userId === user_id);
-    // console.log(check);
-    // if (check.state === false) {
-    //   await Conversation.findOneAndUpdate(
-    //     { _id: req.params.id, [`seen.userId`]: { $eq: user_id } },
-    //     { [`seen.$.state`]: true }
-    //   );
-    // }
     const usersMessages = await Message.find({
       conversation_id: req.params.id,
     });
@@ -92,7 +79,6 @@ const getAllMessages = async (req, res) => {
 const saveMessages = async (req, res) => {
   try {
     const { conversation_id, sender_id, text, receiver_id } = req.body;
-    console.log("sdsd", sender_id, req.user.user_id);
     await Conversation.findOneAndUpdate(
       { _id: conversation_id },
       { updatedAt: new Date() }
