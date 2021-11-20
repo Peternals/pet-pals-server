@@ -8,7 +8,6 @@ const validation = async (req, res) => {
   try {
     // Get user input
     const { email, password } = req.body;
-    console.log(req.body);
 
     // Validate user input
     if (!(email && password)) {
