@@ -2,7 +2,7 @@ const Pet = require("../models/Pet");
 const User = require("../models/User");
 const mongoose = require("mongoose");
 
-//get upcomming requests
+//get upcoming requests
 const getUpcomingRequest = async (req, res) => {
   try {
     const currentDay = new Date().setHours(0, 0, 0, 0);
@@ -62,7 +62,6 @@ const modifyRequest = async (req, res) => {
       { "Carer.requests._id": request_id, _id: user_id },
       { $set: { "Carer.requests.$.status": action } }
     );
-    console.log(req.body);
     res.sendStatus(200);
   } catch (error) {
     console.log(error);
@@ -73,7 +72,6 @@ const getRequestsForPetOwner = async (req, res) => {
   try {
     const { user_id } = req.user;
     const currentDay = new Date().setHours(0, 0, 0, 0);
-    console.log(new Date(currentDay));
 
     const userPets = await Pet.find({ owner_id: user_id }, { _id: 1 });
     const petsIds = userPets.map((id) => id._id.toString());
@@ -111,7 +109,6 @@ const getRequestsForPetOwner = async (req, res) => {
         },
       },
     ]);
-    console.log(request);
     res.send(request);
   } catch (err) {
     console.error(err);
