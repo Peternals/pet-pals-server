@@ -130,5 +130,3 @@ const tags = [
     name: "Inside",
   },
 ];
-
-console.log(JSON.stringify(tags));
