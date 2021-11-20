@@ -8,7 +8,7 @@ router.get("/", pet.getAllPets);
 router.post("/", pet.addPet);
 router.get("/owner", pet.getPetByOwnerId);
 router.get("/type/:type", pet.getPetsByType);
-
+router.get("/tag", pet.getPetsByTag);
 router.get("/:id", pet.getPet);
 router.patch("/:id", pet.updatePet);
 router.delete("/:id", pet.deletePet);

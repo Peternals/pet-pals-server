@@ -1,4 +1,5 @@
 const Pet = require("../models/Pet");
+const Tag = require("../models/Tag");
 
 //get all pets
 const getAllPets = async (req, res) => {
@@ -14,7 +15,10 @@ const getAllPets = async (req, res) => {
 // add pet info
 const addPet = async (req, res) => {
 	try {
-		const { name, description, pet_pictures, type, owner_id, questionnaire } = req.body;
+		const { name, description, pet_pictures, type, owner_id, questionnaire, tagNameArr } = req.body;
+
+		const tagObjArr = await Tag.find({ name: {$in: tagNameArr}});
+
 		const savedPet = await Pet.create({
 			name: name,
 			description: description,
@@ -22,6 +26,7 @@ const addPet = async (req, res) => {
 			type: type,
 			owner_id: owner_id,
 			questionnaire: questionnaire,
+			tag: tagObjArr,
 		});
 		res.status(200).send(savedPet);
 	} catch (err) {
@@ -64,6 +69,21 @@ const getPetsByType = async (req, res) => {
 	}
 };
 
+// get pets by pet tag
+const getPetsByTag = async (req, res) => {
+	try {
+		const params = req.query.name;
+		const modifiedParam = JSON.parse(params);
+
+		const matchPets = await Pet.find({ "tag.name": {$all: modifiedParam}});
+
+		res.status(200).send(matchPets);
+	} catch (err) {
+		console.log(err);
+		res.status(500).send(err);
+	}
+}
+
 // update pet info
 const updatePet = async (req, res) => {
 	try {
@@ -95,6 +115,7 @@ module.exports = {
 	getPet,
 	getPetByOwnerId,
 	getPetsByType,
+	getPetsByTag,
 	updatePet,
 	deletePet,
 	getAllPets,

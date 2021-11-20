@@ -4,8 +4,7 @@ const { update } = require("../models/User");
 
 // update user info
 const updateUser = async (req, res) => {
-  //change this thing, might conflict with eiko's code
-  const request_data = req.body;
+  const request_data = req.body.data;
   const request_id = req.body._id;
 
   if (request_id === req.params.id) {
