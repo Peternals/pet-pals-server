@@ -31,7 +31,7 @@ const validation = async (req, res) => {
 
 const signUp = async (req, res) => {
   try {
-    const { username, email, password, description, profile_picture, type, tag } =
+    const { username, email, password, description, profile_picture, type, interests } =
       req.body;
     //Encrypt user password
     encryptedPassword = await bcrypt.hash(password, 10);
@@ -44,14 +44,14 @@ const signUp = async (req, res) => {
       description: description,
       profile_picture: profile_picture,
       type: type,
-			tag: tag,
+			interests: interests,
     });
 
     // Create token
     const token = jwt.sign(
       { user_id: user._id },
       process.env.ACCESS_TOKEN_SECRET
-    );f
+    );
     // save user token
     user.token = token;
 

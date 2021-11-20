@@ -1,4 +1,5 @@
 const Pet = require("../models/Pet");
+const Tag = require("../models/Tag");
 
 //get all pets
 const getAllPets = async (req, res) => {
@@ -16,10 +17,7 @@ const addPet = async (req, res) => {
 	try {
 		const { name, description, pet_pictures, type, owner_id, questionnaire, tagNameArr } = req.body;
 
-		const tagObjArr = tagNameArr.map(async (tagName) => {
-			const tagObj = await Tags.findOne({ name: tagName });
-			return tagObj;
-		})
+		const tagObjArr = await Tag.find({ name: {$in: tagNameArr}});
 
 		const savedPet = await Pet.create({
 			name: name,
@@ -28,7 +26,7 @@ const addPet = async (req, res) => {
 			type: type,
 			owner_id: owner_id,
 			questionnaire: questionnaire,
-			tags: tagObjArr,
+			tag: tagObjArr,
 		});
 		res.status(200).send(savedPet);
 	} catch (err) {
@@ -76,9 +74,8 @@ const getPetsByTag = async (req, res) => {
 	try {
 		const params = req.query.name;
 		const modifiedParam = JSON.parse(params);
-		console.log(modifiedParam);
 
-		const matchPets = await Pet.find({ "tag.name": {$all: modifiedParam}})
+		const matchPets = await Pet.find({ "tag.name": {$all: modifiedParam}});
 
 		res.status(200).send(matchPets);
 	} catch (err) {
