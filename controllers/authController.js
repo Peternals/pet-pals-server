@@ -51,7 +51,7 @@ const signUp = async (req, res) => {
     const token = jwt.sign(
       { user_id: user._id },
       process.env.ACCESS_TOKEN_SECRET
-    );
+    );f
     // save user token
     user.token = token;
 

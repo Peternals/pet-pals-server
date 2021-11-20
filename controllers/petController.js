@@ -71,6 +71,22 @@ const getPetsByType = async (req, res) => {
 	}
 };
 
+// get pets by pet tag
+const getPetsByTag = async (req, res) => {
+	try {
+		const params = req.query.name;
+		const modifiedParam = JSON.parse(params);
+		console.log(modifiedParam);
+
+		const matchPets = await Pet.find({ "tag.name": {$all: modifiedParam}})
+
+		res.status(200).send(matchPets);
+	} catch (err) {
+		console.log(err);
+		res.status(500).send(err);
+	}
+}
+
 // update pet info
 const updatePet = async (req, res) => {
 	try {
@@ -102,6 +118,7 @@ module.exports = {
 	getPet,
 	getPetByOwnerId,
 	getPetsByType,
+	getPetsByTag,
 	updatePet,
 	deletePet,
 	getAllPets,
