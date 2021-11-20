@@ -13,25 +13,21 @@ const updateUser = async (req, res) => {
       try {
         const salt = await bcrypt.genSalt(10);
         request_data.password = await bcrypt.hash(request_data.password, salt);
-				console.log(request_data.password);
       } catch (err) {
         res.status(500).send(err);
       }
     }
   }
   try {
-    console.log(request_data);
     const result = await User.updateOne(
       { _id: req.params.id },
       { $set: request_data },
       { multi: true }
     );
-    console.log(result);
     if (result.modifiedCount === 1) {
       const user = await User.findOne({ _id: req.params.id });
       res.status(200).send(user);
     }
-    // console.log(user);
   } catch (err) {
     console.log(err);
     res.status(500).send(err);
@@ -41,9 +37,6 @@ const updateUser = async (req, res) => {
 // get a user
 const getUser = async (req, res) => {
   try {
-    console.log(req.params.id);
-    const x = await User.find();
-    console.log(x);
     const user = await User.findById(req.params.id);
     const { password, updatedAt, ...other } = user._doc;
     res.status(200).send(other);
