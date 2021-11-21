@@ -52,17 +52,21 @@ const getLastMessage = async (req, res) => {
   }
 };
 
-const getAllMessages = async (req, res) => {
+const seenConversation = async (req, res) => {
   try {
     const { user_id } = req.user;
-    const conversation = await Conversation.find({ _id: req.params.id });
-    const check = conversation[0].seen.find((seen) => seen.userId === user_id);
-    if (check.state === false) {
-      await Conversation.findOneAndUpdate(
-        { _id: req.params.id, [`seen.userId`]: { $eq: user_id } },
-        { [`seen.$.state`]: true }
-      );
-    }
+    await Conversation.findOneAndUpdate(
+      { _id: req.params.id, [`seen.userId`]: { $eq: user_id } },
+      { [`seen.$.state`]: true }
+    );
+    res.sendStatus(200);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const getAllMessages = async (req, res) => {
+  try {
     const usersMessages = await Message.find({
       conversation_id: req.params.id,
     });
@@ -101,4 +105,5 @@ module.exports = {
   getAllMessages,
   saveMessages,
   getLastMessage,
+  seenConversation,
 };
