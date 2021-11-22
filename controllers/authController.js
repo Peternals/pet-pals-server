@@ -100,7 +100,7 @@ const verifyAndGetUser = async (req, res) => {
   try {
     const { user_id } = req.user;
     const user = await User.findById(user_id);
-    const { _id, username, email, description, profile_picture, type, Carer } =
+    const { _id, username, email, description, profile_picture, type, Carer, interests } =
       user;
     res.send({
       _id,
@@ -110,6 +110,7 @@ const verifyAndGetUser = async (req, res) => {
       profile_picture,
       type,
       Carer,
+      interests,
     });
   } catch (error) {
     console.log(error);
