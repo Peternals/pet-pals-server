@@ -78,7 +78,22 @@ const getPetsByType = async (req, res) => {
 };
 
 // get pets by pet tag
-const getPetsByTag = async (req, res) => {
+const getPetsBySingleTag = async (req, res) => {
+  try {
+    const params = req.query.name;
+    const modifiedParam = JSON.parse(params);
+
+    const matchPets = await Pet.find({ "tag.name": { $in: modifiedParam } });
+
+    res.status(200).send(matchPets);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send(err);
+  }
+};
+
+// get pets by pet tag
+const getPetsByAllTag = async (req, res) => {
   try {
     const params = req.query.name;
     const modifiedParam = JSON.parse(params);
@@ -123,7 +138,8 @@ module.exports = {
   getPet,
   getPetByOwnerId,
   getPetsByType,
-  getPetsByTag,
+  getPetsBySingleTag,
+  getPetsByAllTag,
   updatePet,
   deletePet,
   getAllPets,
