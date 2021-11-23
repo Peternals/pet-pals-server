@@ -14,25 +14,33 @@ const getAllPets = async (req, res) => {
 
 // add pet info
 const addPet = async (req, res) => {
-	try {
-		const { name, description, pet_pictures, type, owner_id, questionnaire, tagNameArr } = req.body;
+  try {
+    const {
+      name,
+      description,
+      pet_pictures,
+      type,
+      owner_id,
+      questionnaire,
+      tag,
+    } = req.body;
 
-		const tagObjArr = await Tag.find({ name: {$in: tagNameArr}});
+    const tagObjArr = await Tag.find({ name: { $in: tag } });
 
-		const savedPet = await Pet.create({
-			name: name,
-			description: description,
-			pet_pictures: pet_pictures,
-			type: type,
-			owner_id: owner_id,
-			questionnaire: questionnaire,
-			tag: tagObjArr,
-		});
-		res.status(200).send(savedPet);
-	} catch (err) {
-		console.log(err);
-		res.status(500).send(err);
-	}
+    const savedPet = await Pet.create({
+      name: name,
+      description: description,
+      pet_pictures: pet_pictures,
+      type: type,
+      owner_id: owner_id,
+      questionnaire: questionnaire,
+      tag: tagObjArr,
+    });
+    res.status(200).send(savedPet);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send(err);
+  }
 };
 
 // get pet info
@@ -71,18 +79,18 @@ const getPetsByType = async (req, res) => {
 
 // get pets by pet tag
 const getPetsByTag = async (req, res) => {
-	try {
-		const params = req.query.name;
-		const modifiedParam = JSON.parse(params);
+  try {
+    const params = req.query.name;
+    const modifiedParam = JSON.parse(params);
 
-		const matchPets = await Pet.find({ "tag.name": {$all: modifiedParam}});
+    const matchPets = await Pet.find({ "tag.name": { $all: modifiedParam } });
 
-		res.status(200).send(matchPets);
-	} catch (err) {
-		console.log(err);
-		res.status(500).send(err);
-	}
-}
+    res.status(200).send(matchPets);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send(err);
+  }
+};
 
 // update pet info
 const updatePet = async (req, res) => {
@@ -111,12 +119,12 @@ const deletePet = async (req, res) => {
 // get all requests for pet
 
 module.exports = {
-	addPet,
-	getPet,
-	getPetByOwnerId,
-	getPetsByType,
-	getPetsByTag,
-	updatePet,
-	deletePet,
-	getAllPets,
+  addPet,
+  getPet,
+  getPetByOwnerId,
+  getPetsByType,
+  getPetsByTag,
+  updatePet,
+  deletePet,
+  getAllPets,
 };
