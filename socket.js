@@ -30,6 +30,13 @@ module.exports = (socket, io) => {
     });
   });
 
+  socket.on("requestSend", (data) => {
+    const user = getUser(data.user_id);
+    user.forEach((u) => {
+      io.to(u.socket_id).emit("requestReceive", data);
+    });
+  });
+
   socket.on("sendMessage", (data) => {
     const user = getUser(data.receiver_id);
     user.forEach((u) => {

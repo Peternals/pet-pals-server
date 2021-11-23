@@ -9,7 +9,7 @@ const seenAllRequest = async (req, res) => {
     const { user_id } = req.user;
 
     await User.updateMany(
-      { _id: user_id, "Carer.requests.status": { $ne: "Pending" } },
+      { _id: user_id },
       {
         $set: {
           "Carer.requests.$[].seen": true,
