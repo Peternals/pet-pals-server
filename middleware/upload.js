@@ -10,7 +10,7 @@ const storage = new GridFsStorage({
 		useUnifiedTopology: true,
 	},
 	file: (req, file) => {
-		const match = ["image/png", "image/jpeg"];
+		const match = ["image/png", "image/jpeg", "image/gif"];
 
 		if (match.indexOf(file.mimetype) === -1) {
 			const filename = `${Date.now()}-petapp-${file.originalname}`;
