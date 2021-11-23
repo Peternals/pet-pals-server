@@ -12,6 +12,8 @@ router.get("/tag/single", pet.getPetsBySingleTag);
 router.get("/tag/all", pet.getPetsByAllTag);
 router.get("/:id", pet.getPet);
 router.patch("/:id", pet.updatePet);
+router.patch("/:id/question", pet.deleteQuestionnaire);
+router.patch("/:id/tag", pet.deleteTag);
 router.delete("/:id", pet.deletePet);
 
 module.exports = router;
