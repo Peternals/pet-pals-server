@@ -1,3 +1,4 @@
+const { index } = require("../models/Carer");
 const Pet = require("../models/Pet");
 const Tag = require("../models/Tag");
 
@@ -95,7 +96,7 @@ const updatePet = async (req, res) => {
       {
         $push: {
           pet_pictures: req.body.pet_pictures,
-          questionnaire: req.body.questionnaire,
+          // questionnaire: req.body.questionnaire,
         },
       }
     );
@@ -106,6 +107,7 @@ const updatePet = async (req, res) => {
         $set: {
           name: req.body.name,
           description: req.body.description,
+          // questionnaire: req.body.questionnaire,
         },
       },
       { multi: true }
@@ -121,13 +123,36 @@ const updatePet = async (req, res) => {
   }
 };
 
-// not use for now
+// const modifyQuestionnaire = async (req, res) => {
+//   console.log(req.body);
+//   try {
+//     const pet = await Pet.findById(req.params.id);
+
+//     const result = await pet.updateOne(
+//       {
+//         questionnaire: req.body.questionnaire,
+//       },
+//       {
+//         $set: { "questionnaire.$": req.body.questionnaire },
+//       }
+//     );
+
+//     if (result.acknowledged) {
+//       const updated = await Pet.findById(req.params.id);
+//       res.status(200).send(updated);
+//     }
+//   } catch (err) {
+//     res.status(500).send(err);
+//   }
+// };
+
 const updateQuestionnaire = async (req, res) => {
   try {
+    console.log(req.body);
     const pet = await Pet.findById(req.params.id);
 
     const result = await pet.updateOne({
-      $push: { questionnaire: req.body.questionnaire },
+      $set: { questionnaire: req.body.questionnaire },
     });
 
     if (result.acknowledged) {
@@ -139,22 +164,22 @@ const updateQuestionnaire = async (req, res) => {
   }
 };
 
-const deleteQuestionnaire = async (req, res) => {
-  try {
-    const pet = await Pet.findById(req.params.id);
+// const deleteQuestionnaire = async (req, res) => {
+//   try {
+//     const pet = await Pet.findById(req.params.id);
 
-    const result = await pet.updateOne({
-      $pull: { questionnaire: req.body.questionnaire },
-    });
+//     const result = await pet.updateOne({
+//       $pull: { questionnaire: req.body.questionnaire },
+//     });
 
-    if (result.acknowledged) {
-      const updated = await Pet.findById(req.params.id);
-      res.status(200).send(updated);
-    }
-  } catch (err) {
-    res.status(500).send(err);
-  }
-};
+//     if (result.acknowledged) {
+//       const updated = await Pet.findById(req.params.id);
+//       res.status(200).send(updated);
+//     }
+//   } catch (err) {
+//     res.status(500).send(err);
+//   }
+// };
 
 const deletePet = async (req, res) => {
   try {
@@ -166,8 +191,6 @@ const deletePet = async (req, res) => {
   }
 };
 
-// get all requests for pet
-
 module.exports = {
   addPet,
   getPet,
@@ -175,8 +198,9 @@ module.exports = {
   getPetsByType,
   getPetsByTag,
   updatePet,
-  // updateQuestionnaire,
-  deleteQuestionnaire,
+  // modifyQuestionnaire,
+  // deleteQuestionnaire,
+  updateQuestionnaire,
   deletePet,
   getAllPets,
 };
