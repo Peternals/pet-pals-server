@@ -3,6 +3,26 @@ const User = require("../models/User");
 const mongoose = require("mongoose");
 
 //get upcoming requests
+
+const seenAllRequest = async (req, res) => {
+  try {
+    const { user_id } = req.user;
+
+    await User.updateMany(
+      { _id: user_id, "Carer.requests.status": { $ne: "Pending" } },
+      {
+        $set: {
+          "Carer.requests.$[].seen": true,
+        },
+      },
+      { multi: true }
+    );
+    res.sendStatus(200);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 const getUpcomingRequest = async (req, res) => {
   try {
     const currentDay = new Date().setHours(0, 0, 0, 0);
@@ -60,7 +80,12 @@ const modifyRequest = async (req, res) => {
     const { request_id, user_id, action } = req.body;
     await User.updateOne(
       { "Carer.requests._id": request_id, _id: user_id },
-      { $set: { "Carer.requests.$.status": action } }
+      {
+        $set: {
+          "Carer.requests.$.status": action,
+          "Carer.requests.$.seen": false,
+        },
+      }
     );
     res.sendStatus(200);
   } catch (error) {
@@ -164,4 +189,5 @@ module.exports = {
   addRequest,
   getUpcomingRequest,
   getCarerPendingRequest,
+  seenAllRequest,
 };

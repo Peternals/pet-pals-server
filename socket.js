@@ -24,7 +24,6 @@ module.exports = (socket, io) => {
   });
 
   socket.on("notifyRequest", (data) => {
-    console.log(data);
     const user = getUser(data.user_id);
     user.forEach((u) => {
       io.to(u.socket_id).emit("notifyRequest", data);

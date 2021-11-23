@@ -6,6 +6,7 @@ const route = express.Router();
 route.use("/", verifyToken);
 
 route.get("/owner/:status", request.getRequestsForPetOwner);
+route.patch("/carer", request.seenAllRequest);
 route.get("/upcoming", request.getUpcomingRequest);
 route.get("/pending", request.getCarerPendingRequest);
 route.post("/", request.addRequest);
