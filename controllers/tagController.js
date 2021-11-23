@@ -9,4 +9,15 @@ const getAllTags = async (req, res) => {
   }
 };
 
-module.exports = { getAllTags };
+const getTagsByCategory = async (req, res) => {
+  try {
+    const { category } = req.params;
+    const tags = await Tag.find({ category: category });
+    res.status(200).send(tags);
+  }
+  catch (err) {
+    res.status(500).send(err);
+  }
+}
+
+module.exports = { getAllTags, getTagsByCategory };

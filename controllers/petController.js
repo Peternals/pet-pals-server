@@ -83,7 +83,7 @@ const getPetsByTag = async (req, res) => {
     const params = req.query.name;
     const modifiedParam = JSON.parse(params);
 
-    const matchPets = await Pet.find({ "tag.name": { $all: modifiedParam } });
+    const matchPets = await Pet.find({ "tag.value": { $all: modifiedParam } });
 
     res.status(200).send(matchPets);
   } catch (err) {
