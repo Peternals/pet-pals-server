@@ -9,9 +9,9 @@ app.use(cors());
 
 app.use(express.json());
 app.use(
-	express.urlencoded({
-		extended: true,
-	})
+  express.urlencoded({
+    extended: true,
+  })
 );
 const port = process.env.PORT || 4000;
 app.use(morgan("dev"));
@@ -22,24 +22,25 @@ app.use("/user", require("./routes/user"));
 app.use("/pet", require("./routes/pet"));
 app.use("/pic", require("./routes/upload"));
 app.use("/requests", require("./routes/request"));
+app.use("/tag", require("./routes/tag"));
 
 app.get("/test", async (req, res) => {
-	res.send("jhgjg");
+  res.send("jhgjg");
 });
 
 //route for messages
 app.use("/messages", require("./routes/message"));
 
 const server = app.listen(port, () => {
-	console.log(`listening to port ${port}`);
+  console.log(`listening to port ${port}`);
 });
 
 const io = Socket(server, {
-	cors: {
-		origin: "*",
-	},
+  cors: {
+    origin: "*",
+  },
 });
 
 io.on("connection", (socket) => {
-	require("./socket")(socket, io);
+  require("./socket")(socket, io);
 });
