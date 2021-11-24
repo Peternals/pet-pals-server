@@ -1,7 +1,7 @@
+const { index } = require("../models/Carer");
 const Pet = require("../models/Pet");
 const Tag = require("../models/Tag");
 
-//get all pets
 const getAllPets = async (req, res) => {
   try {
     const pets = await Pet.find();
@@ -12,7 +12,6 @@ const getAllPets = async (req, res) => {
   }
 };
 
-// add pet info
 const addPet = async (req, res) => {
   try {
     const {
@@ -43,7 +42,6 @@ const addPet = async (req, res) => {
   }
 };
 
-// get pet info
 const getPet = async (req, res) => {
   try {
     const pet = await Pet.findById(req.params.id);
@@ -54,7 +52,6 @@ const getPet = async (req, res) => {
   }
 };
 
-// get pet info by ower_id
 const getPetByOwnerId = async (req, res) => {
   try {
     const { user_id } = req.user;
@@ -66,7 +63,6 @@ const getPetByOwnerId = async (req, res) => {
   }
 };
 
-// get pets by pet type
 const getPetsByType = async (req, res) => {
   try {
     const pets = await Pet.find({ type: req.params.type.toLowerCase() });
@@ -78,12 +74,12 @@ const getPetsByType = async (req, res) => {
 };
 
 // get pets by pet tag
-const getPetsByTag = async (req, res) => {
+const getPetsBySingleTag = async (req, res) => {
   try {
-    const params = req.query.name;
+    const params = req.query.value;
     const modifiedParam = JSON.parse(params);
 
-    const matchPets = await Pet.find({ "tag.name": { $all: modifiedParam } });
+    const matchPets = await Pet.find({ "tag.value": { $in: modifiedParam } });
 
     res.status(200).send(matchPets);
   } catch (err) {
@@ -92,20 +88,90 @@ const getPetsByTag = async (req, res) => {
   }
 };
 
-// update pet info
-const updatePet = async (req, res) => {
+// get pets by pet tag
+const getPetsByAllTag = async (req, res) => {
   try {
-    await Pet.findByIdAndUpdate(req.params.id, {
-      $set: req.body,
-    });
-    res.status(200).send("Pet info is successfully updated!");
+    const params = req.query.value;
+    const modifiedParam = JSON.parse(params);
+
+    const matchPets = await Pet.find({ "tag.value": { $all: modifiedParam } });
+
+    res.status(200).send(matchPets);
   } catch (err) {
     console.log(err);
     res.status(500).send(err);
   }
 };
 
-// delete pet info
+const updatePet = async (req, res) => {
+  console.log(req.body);
+  try {
+    const insertResult = await Pet.updateOne(
+      { _id: req.params.id },
+      {
+        $push: {
+          pet_pictures: req.body.pet_pictures,
+          questionnaire: req.body.questionnaire,
+          tag: req.body.tag,
+        },
+      }
+    );
+
+    const result = await Pet.updateOne(
+      { _id: req.params.id },
+      {
+        $set: {
+          name: req.body.name,
+          description: req.body.description,
+        },
+      },
+      { multi: true }
+    );
+
+    if (result.acknowledged || insertResult.acknowledged) {
+      const pet = await Pet.findById(req.params.id);
+      res.status(200).send(pet);
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).send(err);
+  }
+};
+
+const deleteQuestionnaire = async (req, res) => {
+  try {
+    const pet = await Pet.findById(req.params.id);
+
+    const result = await pet.updateOne({
+      $pull: { questionnaire: req.body.questionnaire },
+    });
+
+    if (result.acknowledged) {
+      const updated = await Pet.findById(req.params.id);
+      res.status(200).send(updated);
+    }
+  } catch (err) {
+    res.status(500).send(err);
+  }
+};
+
+const deleteTag = async (req, res) => {
+  try {
+    const pet = await Pet.findById(req.params.id);
+
+    const result = await pet.updateOne({
+      $pull: { tag: req.body.tag },
+    });
+
+    if (result.acknowledged) {
+      const updated = await Pet.findById(req.params.id);
+      res.status(200).send(updated);
+    }
+  } catch (err) {
+    res.status(500).send(err);
+  }
+};
+
 const deletePet = async (req, res) => {
   try {
     await Pet.findByIdAndDelete(req.params.id);
@@ -116,15 +182,16 @@ const deletePet = async (req, res) => {
   }
 };
 
-// get all requests for pet
-
 module.exports = {
   addPet,
   getPet,
   getPetByOwnerId,
   getPetsByType,
-  getPetsByTag,
+  getPetsBySingleTag,
+  getPetsByAllTag,
   updatePet,
+  deleteQuestionnaire,
+  deleteTag,
   deletePet,
   getAllPets,
 };
