@@ -76,10 +76,10 @@ const getPetsByType = async (req, res) => {
 // get pets by pet tag
 const getPetsBySingleTag = async (req, res) => {
   try {
-    const params = req.query.name;
+    const params = req.query.value;
     const modifiedParam = JSON.parse(params);
 
-    const matchPets = await Pet.find({ "tag.name": { $in: modifiedParam } });
+    const matchPets = await Pet.find({ "tag.value": { $in: modifiedParam } });
 
     res.status(200).send(matchPets);
   } catch (err) {
@@ -91,7 +91,7 @@ const getPetsBySingleTag = async (req, res) => {
 // get pets by pet tag
 const getPetsByAllTag = async (req, res) => {
   try {
-    const params = req.query.name;
+    const params = req.query.value;
     const modifiedParam = JSON.parse(params);
 
     const matchPets = await Pet.find({ "tag.value": { $all: modifiedParam } });
