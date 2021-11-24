@@ -24,7 +24,13 @@ const addPet = async (req, res) => {
       tag,
     } = req.body;
 
-    const tagObjArr = await Tag.find({ name: { $in: tag } });
+    const tagObjArr = await Tag.aggregate([
+      {
+        $match: {
+          value: { $in: tag },
+        },
+      },
+    ]);
 
     const savedPet = await Pet.create({
       name: name,
