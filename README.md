@@ -50,9 +50,9 @@ After running the client server, open your browser and access your local host ur
 <img width="500" alt="Screen Shot 2021-11-24 at 19 17 11" src="https://user-images.githubusercontent.com/83794734/143219860-ee33732a-67ce-4038-8d9d-40a292b4e1ab.png"> 
 
 # Tech Stack 🤖  
-|<img src="https://user-images.githubusercontent.com/83794734/143388086-2f543482-4c32-4d1b-9c10-00ea95769c8c.png" alt="React image" width="100">|<img src="https://user-images.githubusercontent.com/83794734/143385316-257a292f-799f-493e-967e-d721a2771734.png" alt="Redux image" width="100">|<img src="https://user-images.githubusercontent.com/83794734/143388023-1728a310-6365-4572-8dd3-8b3e29b7c99e.png" alt="Bulma image" width="100">|<img src="https://user-images.githubusercontent.com/83794734/143388046-8e246ed1-c551-4729-ba5c-97ba3fdc4e02.png" alt="JWT image" width="100">|<img src="https://user-images.githubusercontent.com/83794734/143386343-31b0b2a3-1211-4b7e-9533-bfc3f9d388a4.png" alt="Socket.io image" width="100">|
-|---|---|---|---|---|
-|[React](https://reactjs.org/)|[Redux](https://redux-toolkit.js.org/)|[Bulma](https://bulma.io/)|[JWT](https://jwt.io/)|[Socket.io](https://socket.io/)|
+|<img src="https://user-images.githubusercontent.com/83794734/143398244-1c104227-830a-487d-bec9-584e1e98bb95.png" alt="mongodb image" width="100">|<img src="https://user-images.githubusercontent.com/83794734/143388046-8e246ed1-c551-4729-ba5c-97ba3fdc4e02.png" alt="JWT image" width="100">|<img src="https://user-images.githubusercontent.com/83794734/143386343-31b0b2a3-1211-4b7e-9533-bfc3f9d388a4.png" alt="Socket.io image" width="100">|
+|---|---|---|
+|[mongoDB](https://www.mongodb.com/)|[JWT](https://jwt.io/)|[Socket.io](https://socket.io/)|
 # Authors 📝  
 - [Callum Koike Marshall](https://github.com/marsc0388)
 - [Karin Umehara](https://github.com/karin0216)
