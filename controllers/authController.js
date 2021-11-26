@@ -30,20 +30,27 @@ const validation = async (req, res) => {
 
 const signUp = async (req, res) => {
   try {
-    const { username, email, password, description, profile_picture, type, interests } =
-      req.body;
+    const {
+      username,
+      email,
+      password,
+      description,
+      profile_picture,
+      type,
+      interests,
+    } = req.body;
     //Encrypt user password
     encryptedPassword = await bcrypt.hash(password, 10);
 
     // Create user in our database
     const user = await User.create({
       username: username,
-      email: email.toLowerCase(), // sanitize: convert email to lowercase
+      email: email.toLowerCase(), // sanitize: convert email to lowercase (do we need to convert it to lowercase??)
       password: encryptedPassword,
       description: description,
       profile_picture: profile_picture,
       type: type,
-			interests: interests,
+      interests: interests,
     });
 
     // Create token
@@ -100,8 +107,16 @@ const verifyAndGetUser = async (req, res) => {
   try {
     const { user_id } = req.user;
     const user = await User.findById(user_id);
-    const { _id, username, email, description, profile_picture, type, Carer, interests } =
-      user;
+    const {
+      _id,
+      username,
+      email,
+      description,
+      profile_picture,
+      type,
+      Carer,
+      interests,
+    } = user;
     res.send({
       _id,
       username,
