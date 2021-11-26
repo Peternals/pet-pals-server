@@ -45,7 +45,7 @@ const signUp = async (req, res) => {
     // Create user in our database
     const user = await User.create({
       username: username,
-      email: email.toLowerCase(), // sanitize: convert email to lowercase (do we need to convert it to lowercase??)
+      email: email, // sanitize: convert email to lowercase (do we need to convert it to lowercase??)
       password: encryptedPassword,
       description: description,
       profile_picture: profile_picture,
