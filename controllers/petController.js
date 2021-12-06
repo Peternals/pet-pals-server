@@ -110,7 +110,6 @@ const getPetsByAllTag = async (req, res) => {
 };
 
 const updatePet = async (req, res) => {
-  console.log(req.body);
   try {
     const insertResult = await Pet.updateOne(
       { _id: req.params.id },
